@@ -2366,7 +2366,6 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
     protected buildWhere(where: any, metadata: EntityMetadata, alias: string, embedPrefix?: string): string {
         let condition: string = "";
-        let parameterIndex = Object.keys(this.expressionMap.nativeParameters).length;
         if (where instanceof Array) {
             condition = ("(" + where.map(whereItem => {
                 return this.buildWhere(whereItem, metadata, alias, embedPrefix);
@@ -2378,6 +2377,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
                 if (where[key] === undefined)
                     continue;
 
+                let parameterIndex = Object.keys(this.expressionMap.nativeParameters).length;
                 const propertyPath = embedPrefix ? embedPrefix + "." + key : key;
                 const column = metadata.findColumnWithPropertyPathStrict(propertyPath);
                 const embed = metadata.findEmbeddedWithPropertyPath(propertyPath);
